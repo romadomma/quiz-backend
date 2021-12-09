@@ -1,0 +1,21 @@
+---
+version: "3.7"
+
+services:
+  db:
+    image: postgres:14.1
+    restart: always
+    environment:
+      # Used only at DB initialization, see db/init-scp-db.sh
+      - DB_MASTER_PASS=quizzy_password
+      # Used only at DB initialization
+      # see https://github.com/docker-library/docs/blob/master/postgres/README.md#postgres_password
+      - POSTGRES_PASSWORD=YetanoTHerPGsupeRUserRseCREt
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./db:/docker-entrypoint-initdb.d:ro"
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
