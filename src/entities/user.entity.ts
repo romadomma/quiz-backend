@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Quiz } from './quiz.entity';
 import { UserAnswer } from './user-answer.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User {
@@ -24,9 +25,10 @@ export class User {
   })
   email: string;
 
+  @Exclude()
   @Column({
     type: 'varchar',
-    length: 50,
+    length: 64,
     nullable: false,
     comment: 'user password sha256 hash',
     name: 'password_hash',
@@ -44,9 +46,11 @@ export class User {
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
+  @Exclude()
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
+  @Exclude()
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
 
