@@ -13,6 +13,7 @@ export class UserService {
       where: {
         email,
       },
+      withDeleted: false,
     });
   }
 }
