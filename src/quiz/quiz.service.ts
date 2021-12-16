@@ -15,6 +15,9 @@ export class QuizService {
       where: {
         ownerId,
       },
+      order: {
+        updatedAt: 'ASC',
+      },
       withDeleted: false,
     });
   }

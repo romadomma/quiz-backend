@@ -45,10 +45,10 @@ export class Answer {
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
 
+  @OneToMany(() => UserAnswer, (userAnswer) => userAnswer.answer)
+  userAnswers: UserAnswer[];
+
   @ManyToOne(() => Question, (question) => question.answers)
   @JoinColumn({ name: 'question_id' })
   question: Question;
-
-  @OneToMany(() => UserAnswer, (userAnswer) => userAnswer.answer)
-  userAnswers: UserAnswer[];
 }

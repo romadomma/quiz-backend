@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import { User } from './user.entity';
 import { Question } from './question.entity';
+import { Room } from './room.entity';
 
 @Entity()
 export class Quiz {
@@ -39,10 +40,13 @@ export class Quiz {
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
 
-  @ManyToOne(() => User, (user) => user.quizes)
-  @JoinColumn({ name: 'owner_id' })
-  owner: User;
-
   @OneToMany(() => Question, (question) => question.quiz)
   questions: Question[];
+
+  @OneToMany(() => Room, (room) => room.quiz)
+  rooms: Room[];
+
+  @ManyToOne(() => User, (user) => user.quizzes)
+  @JoinColumn({ name: 'owner_id' })
+  owner: User;
 }
