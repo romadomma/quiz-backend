@@ -54,17 +54,17 @@ export class Room {
   @JoinColumn({ name: 'quiz_id' })
   quiz: Quiz;
 
-  @ManyToMany(() => User)
-  @JoinTable({
-    name: 'room_user',
-    joinColumn: {
-      name: 'room_id',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'user_id',
-      referencedColumnName: 'id',
-    },
-  })
-  connectedUsers: User[];
+  // @ManyToMany(() => User)
+  // @JoinTable({
+  //   name: 'room_user',
+  //   joinColumn: {
+  //     name: 'room_id',
+  //     referencedColumnName: 'id',
+  //   },
+  //   inverseJoinColumn: {
+  //     name: 'user_id',
+  //     referencedColumnName: 'id',
+  //   },
+  // })
+  // connectedUsers: User[];
 }

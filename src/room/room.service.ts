@@ -20,11 +20,13 @@ export class RoomService {
   create({ adminId, quizId }: CreateProps) {
     for (let i = 0; i < 3; i++) {
       try {
-        return this.roomsRepository.create({
+        const room = this.roomsRepository.create({
           adminId,
           quizId,
           code: crypto.randomBytes(3).toString('hex').toUpperCase(),
         });
+
+        return this.roomsRepository.save(room);
       } catch (e) {
         console.error('Сгенерирован код, который уже существует в БД');
       }
