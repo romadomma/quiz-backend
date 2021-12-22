@@ -28,6 +28,11 @@ type HandleCreateRoomProps = {
   quizId: number;
 };
 
+type HandleConnectClientProps = {
+  userId: number;
+  code: string;
+};
+
 type HandleStartQuizProps = {
   code: string;
 };
@@ -62,6 +67,17 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.rooms.set(room.code, new Map([[client.id, client]]));
     client.join(room.code);
     client.emit(events.roomCreated, room.code);
+  }
+
+  @SubscribeMessage(events.connectClient)
+  async handleConnectClient(
+    client: Socket,
+    { userId, code }: HandleConnectClientProps,
+  ) {
+    const room = this.rooms.get(code);
+    room.set(client.id, client);
+    await this.roomService.saveRoomUser(userId, code);
+    this.wss.to(code).emit(events.clientConnected, room.size);
   }
 
   @SubscribeMessage(events.startQuiz)

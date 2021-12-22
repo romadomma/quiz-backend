@@ -8,10 +8,10 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  JoinTable,
 } from 'typeorm';
 import { User } from './user.entity';
 import { Quiz } from './quiz.entity';
-import { JoinTable } from 'typeorm/browser';
 
 @Entity()
 export class Room {
@@ -54,17 +54,13 @@ export class Room {
   @JoinColumn({ name: 'quiz_id' })
   quiz: Quiz;
 
-  // @ManyToMany(() => User)
-  // @JoinTable({
-  //   name: 'room_user',
-  //   joinColumn: {
-  //     name: 'room_id',
-  //     referencedColumnName: 'id',
-  //   },
-  //   inverseJoinColumn: {
-  //     name: 'user_id',
-  //     referencedColumnName: 'id',
-  //   },
-  // })
-  // connectedUsers: User[];
+  @ManyToMany(() => User)
+  @JoinTable({
+    name: 'room_user',
+    joinColumn: {
+      name: 'room_id',
+      referencedColumnName: 'id',
+    },
+  })
+  users: User[];
 }
