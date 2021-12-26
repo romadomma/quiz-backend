@@ -55,12 +55,6 @@ export class Room {
   quiz: Quiz;
 
   @ManyToMany(() => User)
-  @JoinTable({
-    name: 'room_user',
-    joinColumn: {
-      name: 'room_id',
-      referencedColumnName: 'id',
-    },
-  })
+  @JoinTable()
   users: User[];
 }

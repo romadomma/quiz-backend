@@ -5,13 +5,10 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from './user.entity';
 import { Question } from './question.entity';
-import { UserAnswer } from './user-answer.entity';
 
 @Entity()
 export class Answer {
@@ -44,9 +41,7 @@ export class Answer {
 
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
-
-  @OneToMany(() => UserAnswer, (userAnswer) => userAnswer.answer)
-  userAnswers: UserAnswer[];
+  çc;
 
   @ManyToOne(() => Question, (question) => question.answers)
   @JoinColumn({ name: 'question_id' })

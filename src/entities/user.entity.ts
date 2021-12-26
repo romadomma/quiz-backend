@@ -7,13 +7,12 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  JoinTable,
 } from 'typeorm';
 import { Quiz } from './quiz.entity';
-import { UserAnswer } from './user-answer.entity';
 import { Exclude } from 'class-transformer';
 import { Room } from './room.entity';
-import { JoinTable } from 'typeorm/browser';
-import { RoomUser } from './room-user.entity';
+import { Answer } from './answer.entity';
 
 @Entity()
 export class User {
@@ -62,12 +61,13 @@ export class User {
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
 
-  @OneToMany(() => UserAnswer, (userAnswer) => userAnswer.user)
-  answers: UserAnswer;
-
   @OneToMany(() => Quiz, (quiz) => quiz.owner)
   quizzes: Quiz[];
 
   @OneToMany(() => Room, (room) => room.quiz)
   rooms: Room[];
+
+  @ManyToMany(() => Answer)
+  @JoinTable()
+  answers: Answer[];
 }

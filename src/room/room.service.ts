@@ -5,6 +5,7 @@ import { Room } from '../entities/room.entity';
 import * as crypto from 'crypto';
 import { RuntimeException } from '@nestjs/core/errors/exceptions/runtime.exception';
 import { User } from '../entities/user.entity';
+import { Answer } from '../entities/answer.entity';
 
 type CreateProps = {
   adminId: number;
@@ -43,11 +44,40 @@ export class RoomService {
         code,
       },
       withDeleted: false,
-    });
-    const user = await this.usersRepository.findOneOrFail(userId, {
       relations: ['users'],
     });
+    const user = await this.usersRepository.findOneOrFail(userId);
     room.users.push(user);
     return this.roomsRepository.save(room);
+  }
+
+  async getQuestionsByCode(code: string) {
+    const {
+      quiz: { questions },
+    } = await this.roomsRepository.findOne({
+      where: { code },
+      withDeleted: false,
+      // relations: ['quiz.questions.answers'],
+      join: {
+        alias: 'room',
+        leftJoinAndSelect: {
+          quiz: 'room.quiz',
+          questions: 'quiz.questions',
+          answers: 'questions.answers',
+        },
+      },
+    });
+
+    return questions;
+  }
+
+  async saveUserAnswer(userId: number, answerId: number) {
+    const user = await this.usersRepository.findOne(userId, {
+      relations: ['answers'],
+    });
+    const answer = new Answer();
+    answer.id = answerId;
+    user.answers.push(answer);
+    await this.usersRepository.save(user);
   }
 }
